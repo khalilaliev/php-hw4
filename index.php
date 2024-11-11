@@ -5,22 +5,27 @@
 $nested_arr = [
   [21,33,56,2,23,5],
   [65,32,2,1,6,9,81,7],
-  [1,4,5, 32,3,78,3,5,5],
+  [1,4,5,32,3,78,3,5,5],
+  [
+    [10,20,30,40,50],
+    [11,22,33,44,55]
+  ]
 ];
 
-function get_index_of_nested_arr(array $array, int $index): array {
+function get_data_by_index(array $array, int $index): array {
   $arr = [];
   foreach ($array as $value) {
-    if (is_array($value)) {
-      if (array_key_exists($index, $value)) {
-        $arr[] = $value[$index];
+      if (is_array($value)) {
+          $arr = array_merge($arr, get_data_by_index($value, $index));
+      } elseif (array_key_exists($index, $array)) {
+          $arr[] = $array[$index];
+          break;
       }
-    }
   }
   return $arr;
 }
 
-print_r(get_index_of_nested_arr($nested_arr, 3));
+print_r(get_data_by_index($nested_arr, 3));
 
 echo '<br>';
 
